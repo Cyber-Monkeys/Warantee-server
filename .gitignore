@@ -2,6 +2,5 @@ config.js
 node_modules
 aws_config.js
 config.js
-server.js
 server.key
 package-lock.json
