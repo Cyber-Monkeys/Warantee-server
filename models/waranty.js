@@ -47,19 +47,19 @@ var Waranty = sequelize.define('Waranty', {
   freezeTableName: true
 });
 
-Waranty.sync({force: true}).then(function () {
-  Waranty.create({
-    uid: 'u123',
-    date: '12/09/2019',
-    amount: 9000,
-    category: 0,
-    warantyPeriod: 90,
-    sellerName: 'John Doe',
-    sellerPhone: '0509232342',
-    sellerEmail: 'wat@gmail.com',
-    location: 'UOWD Dubai'
-  });
-  return 'default waranty created';
-});
+// Waranty.sync({force: true}).then(function () {
+//   Waranty.create({
+//     uid: 'u123',
+//     date: '12/09/2019',
+//     amount: 9000,
+//     category: 0,
+//     warantyPeriod: 90,
+//     sellerName: 'John Doe',
+//     sellerPhone: '0509232342',
+//     sellerEmail: 'wat@gmail.com',
+//     location: 'UOWD Dubai'
+//   });
+//   return 'default waranty created';
+// });
 
 module.exports = Waranty;
