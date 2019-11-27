@@ -1,11 +1,11 @@
-var admin = require('firebase-admin');
+vadminar admin = require('firebase-admin');
 var express = require('express');
 var bodyParser = require("body-parser");
 var app = express();
-const port = 443;
+const port = 80;
 var config = require('./config');
 const fs = require('fs');
-const http = require('https');
+const http = require('http');
 var Waranty = require('./models/waranty');
 const multer = require('multer');
 
@@ -15,12 +15,6 @@ const BUCKET_NAME = 'storage-warantee';
 
 const awsconfig = require('./aws_config');
 
-var sslPath = '/etc/letsencrypt/live/www.vrpacman.com/';
-
-var options = {
-    key: fs.readFileSync(sslPath + 'privkey.pem'),
-    cert: fs.readFileSync(sslPath + 'fullchain.pem')
-};
 
 const s3 = new AWS.S3(awsconfig);
 
@@ -175,8 +169,8 @@ app.post('/waranty', function(req, res, next) {
 	    warantyPeriod: req.body.warantyPeriod,
 	    sellerName: req.body.sellerName,
 	    sellerPhone: req.body.sellerPhone,
-	    sellerEmail: req.body.sellerEmail,
-            location: req.body.location
+	    sellerEmail: req.body.sellerEmail
+
 	  }).then(function (waranty) {
 	  	console.log(JSON.stringify(waranty));
         if (waranty) {
@@ -223,7 +217,7 @@ app.get('/s3Proxy', function(req, res, next){
     var fileStream = s3.getObject(options).createReadStream();
     fileStream.pipe(res);
 });
-const server = http.createServer(options, app);
+const server = http.createServer(app);
 server.listen(port, function() {
   console.log('Server is now connected on port ' + port);
 }).on('error', function(err) {
