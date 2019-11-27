@@ -2,10 +2,10 @@ var admin = require('firebase-admin');
 var express = require('express');
 var bodyParser = require("body-parser");
 var app = express();
-const port = 3000;
+const port = 443;
 var config = require('./config');
 const fs = require('fs');
-const http = require('http');
+const http = require('https');
 var Waranty = require('./models/waranty');
 const multer = require('multer');
 
@@ -15,6 +15,12 @@ const BUCKET_NAME = 'storage-warantee';
 
 const awsconfig = require('./aws_config');
 
+var sslPath = '/etc/letsencrypt/live/www.vrpacman.com/';
+
+var options = {
+    key: fs.readFileSync(sslPath + 'privkey.pem'),
+    cert: fs.readFileSync(sslPath + 'fullchain.pem')
+};
 
 const s3 = new AWS.S3(awsconfig);
 
@@ -100,6 +106,7 @@ app.use(async function(req, res, next) {
       next();
     } catch (e) {
 		console.log("not authenticated");
+	console.log(e.message);
       res
         .status(401)
         .send({ error: 'You are not authorized to make this request' });
@@ -169,8 +176,7 @@ app.post('/waranty', function(req, res, next) {
 	    sellerName: req.body.sellerName,
 	    sellerPhone: req.body.sellerPhone,
 	    sellerEmail: req.body.sellerEmail,
-      location: req.body.location
-
+            location: req.body.location
 	  }).then(function (waranty) {
 	  	console.log(JSON.stringify(waranty));
         if (waranty) {
