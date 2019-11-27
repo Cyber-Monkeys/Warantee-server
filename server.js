@@ -132,8 +132,8 @@ app.get('/login', function(req, res) {
 app.get('/download', function(req, res) {
 	console.log('wow endpoint reached');
 	console.log("uid", req.authId);
-	res.status(200);
 	res.download('uploads/wow.jpg');
+  res.status(200).send('Download Complete');
 });
 
 
@@ -148,7 +148,7 @@ app.post('/video', uploadVideo.any(), function (req, res, next) {
   res.end();
 });
 app.get('/waranty', function(req, res, next) {
-	console.log("waranty get request");
+  console.log("waranty get request");
 	return Waranty.findAll({
 		where: {
 			uid: req.authId
@@ -205,7 +205,9 @@ app.get('/testAWS', function(req, res, next) {
             throw err;
         }
         console.log(`File uploaded successfully. ${data.Location}`);
+        res.status(200).send('File uploaded successfully');
     });
+    res.status(400).send('Error in insert new record');
 });
 
 
@@ -222,8 +224,17 @@ app.get('/s3Proxy', function(req, res, next){
     res.attachment(fileKey);
     var fileStream = s3.getObject(options).createReadStream();
     fileStream.pipe(res);
+    res.status(200).send('file downloaded successfully');
 });
-const server = http.createServer(options, app);
+
+
+app.get('/update', function(req, res, next) {
+  console.lo('update in progress');
+   Waranty.decrement(['warantyPeriod', '2'], { where: { uid: req.authId } });
+   res.status(200).send('Error in insert new record');
+});
+
+const server = http.createServer(app);
 server.listen(port, function() {
   console.log('Server is now connected on port ' + port);
 }).on('error', function(err) {

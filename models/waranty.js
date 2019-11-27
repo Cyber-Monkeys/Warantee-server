@@ -46,7 +46,6 @@ var Waranty = sequelize.define('Waranty', {
 }, {
   freezeTableName: true
 });
-
 //Waranty.sync({force: true}).then(function () {
 //  Waranty.create({
 //    uid: 'u123',
