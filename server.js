@@ -224,7 +224,7 @@ app.get('/s3Proxy', function(req, res, next){
 
 app.get('/update', function(req, res, next) {
   console.log('update in progress');
-   Waranty.decrement(['warantyPeriod', '2'], { where: { uid: req.authId } });
+   Waranty.decrement(['warantyPeriod', '1'], { where: { uid: req.authId } });
    res.status(200).send('Error in insert new record');
 });
 
